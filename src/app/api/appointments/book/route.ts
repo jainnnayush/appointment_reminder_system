@@ -25,8 +25,18 @@ export const POST = async(req:Request) => {
         if (!doctor || doctor.role !== 'doctor') {
             return NextResponse.json({ message: 'Doctor not found or not valid' }, { status: 404 });
         }
+        
+        const conflictingAppointment = await prisma.appointment.findFirst({
+            where: {
+                doctorId: doctorId,
+                appointment_time: appointmentDate,
+            },
+        });
 
-        console.log("Creating appointment...");
+        if (conflictingAppointment) {
+            return NextResponse.json({ message: 'Doctor is not available at the requested time' }, { status: 409 });
+        }
+
         const appointment = await prisma.appointment.create({
             data: {
               appointment_time: appointmentDate,
