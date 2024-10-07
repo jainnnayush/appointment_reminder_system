@@ -34,9 +34,9 @@ export const POST = async(req:Request) => {
               doctorId: doctorId,
             },
         });
-        console.log("About to call queueNotification...");
+        
         queueNotification(appointment);
-        console.log("notification added to queue");
+        
         return NextResponse.json(appointment,{status:201});
 
     } catch (error) {

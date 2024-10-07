@@ -6,23 +6,23 @@ import redisClient from "@/config/redis";
 
 const notificationQueue = new Queue('notifications',{ connection :redisClient});
 
-console.log("redis connection done onto queueing notif");
+//console.log("redis connection done onto queueing notif");
 
 const queueNotification = (appointment:Appointment) => {
-    console.log("function called");
-    console.log("Appointment details:", appointment);
+    //console.log("function called");
+    //console.log("Appointment details:", appointment);
 
     const appointmentTime=new Date(appointment.appointment_time);
     const reminderTime=appointmentTime.getTime()- 2*60*60*1000;
 
     notificationQueue.add('sendReminder',{appointment},{
-        delay:0,//reminderTime-Date.now(),
+        delay:reminderTime-Date.now(),
         attempts:3,
         backoff:10000,
     }).then(() =>{
-        console.log("Notification succesfully added to the queue");
+        //console.log("Notification succesfully added to the queue");
     }).catch((error)=>{
-        console.error("Error adding notification to the queue", error);
+        //console.error("Error adding notification to the queue", error);
     });
 };
 const worker = new Worker('notifications', async(job:Job) =>{
@@ -32,14 +32,14 @@ const worker = new Worker('notifications', async(job:Job) =>{
             const patient = await prisma.user.findUnique({where:{id:appointment.patientId}});
 
             if(!patient){
-                console.error(`Patient not found for appointment ID:${appointment.id}`);
+                //console.error(`Patient not found for appointment ID:${appointment.id}`);
                 throw new Error('Patient not found');
             }
 
             await sendEmail(patient.email,'Appointment Reminder', `Your appointment is scheduled for ${appointment.appointment_time}`);
-            console.log(`Reminder sent to ${patient.email} for appointment ID: ${appointment.id}`);
+            //console.log(`Reminder sent to ${patient.email} for appointment ID: ${appointment.id}`);
         } catch (error) {
-            console.error(`Error sending reminder for appointment ID: ${appointment.id}`, error);
+            //console.error(`Error sending reminder for appointment ID: ${appointment.id}`, error);
             throw error;
         }
     }
