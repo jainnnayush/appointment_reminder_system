@@ -39,3 +39,30 @@ Start by cloning the project repository to your local machine:
 ```bash
 git clone https://github.com/yourusername/appointment-reminder-system.git
 cd appointment-reminder-system
+
+### 2. Install Dependencies
+Make sure you have Next.js installed. Then, install all the required packages by running:
+
+```bash
+npm install
+
+## Environment Variables
+Create a .env file in the root directory. Add the following variables and update the values as per your configuration:
+
+# Database connection URL (PostgreSQL)
+DATABASE_URL=your_postgresql_connection_url
+
+# JWT Secret for token generation
+JWT_SECRET=your_jwt_secret
+
+# Redis configuration
+REDIS_URL=redis://default:redis_password@redis_host:redis_port
+REDIS_HOST=your_redis_host
+REDIS_PORT=your_redis_port
+REDIS_PASSWORD=your_redis_password
+
+# Mail server configuration (SMTP)
+MAIL_HOST=your_smtp_host
+MAIL_PORT=your_smtp_port
+MAIL_USER=your_smtp_user
+MAIL_PASSWORD=your_smtp_password
