@@ -1,9 +1,9 @@
 import Redis from 'ioredis';
 
 const redisClient = new Redis({
-    host: 'redis-12093.c62.us-east-1-4.ec2.redns.redis-cloud.com',
-    port: 12093,
-    password: 'xtdgGwxgsr1GfZNORVih7HYQOOl2rdyI', 
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : undefined,
+    password: process.env.REDIS_PASSWORD, 
     maxRetriesPerRequest: null,
 });
 console.log("created redis client");

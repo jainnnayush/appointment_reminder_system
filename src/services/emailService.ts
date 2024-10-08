@@ -1,22 +1,20 @@
 import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export const transporter = nodemailer.createTransport({
-    pool: true,
-    service: 'hotmail',
-    host: 'smtp.office365.com', 
-    port: 587, 
-    secure: false, 
-    auth: {
-        user: process.env.USER, 
-        pass: process.env.PASSWORD, 
+    host:process.env.MAIL_HOST,
+    port:process.env.MAIL_PORT,
+    secure:process.env.NODE_ENV !== 'development',
+    auth:{
+        user:process.env.MAIL_USER,
+        pass:process.env.MAIL_PASSWORD
     },
-    maxConnections: 1,
-});
+} as SMTPTransport.Options);
 
 export const sendEmail = async(to :string, subject:string,body:string)=>{
     try {
         await transporter.sendMail({
-            from:process.env.USER,
+            from:process.env.MAIL_USER,
             to:to,
             subject: subject,
             html:body,
